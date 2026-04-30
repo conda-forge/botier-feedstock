@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  name: botier
+  version: "1.0.0"
+  python_min: "3.10"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/botier-${{ version }}.tar.gz
+  sha256: 48b2c4da727278a5611b89f1203f112c6873d476f64c762c0c4d0b061896558d
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python 3.10.*
+    - setuptools >=61.0
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - pytorch
+    - botorch
+    - pandas
+
+tests:
+  - python:
+      imports:
+        - botier
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: "BoTier: Multi-Objective Bayesian Optimization with Tiered Composite Objectives"
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/fsk-lab/botier
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
